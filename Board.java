@@ -1,28 +1,42 @@
 package com.randommurican.practiceSudoku;
 
+import java.util.Random;
+
 public class Board {
+	private boolean success;
 	private int[][] board;
 	private static int BOARD_SIZE = 9;
-	//i = ROW
-	//j = COLUMN
+
 	Board() {
+		success = true;
 		board = new int[BOARD_SIZE][BOARD_SIZE];
 		for(int ROW = 0; ROW < BOARD_SIZE; ROW++)
 			for(int COLUMN = 0; COLUMN < BOARD_SIZE; COLUMN++)
 				if(setValue(ROW, COLUMN)) {}
 				else {
-					System.out.println("There was an error on panel " + ROW + ", " + COLUMN);
+					//System.out.println("There was an error on panel " + ROW + ", " + COLUMN + "\n\n");
+					success = false;
 					ROW = BOARD_SIZE;
 					COLUMN = BOARD_SIZE;
 				}
+		
 	}
 	
 	private boolean setValue(int ROW, int COLUMN) {
-		boolean test = false;
-		for(int ROW_TEST = 1; ROW_TEST <= BOARD_SIZE; ROW_TEST++) {
-			
-		}
-		return test;
+		Random rand = new Random();
+		int START = rand.nextInt(9) + 1;
+		int VALUE = START;
+		do {
+			if(checkGrid(ROW, COLUMN, VALUE) && checkRow(ROW, VALUE) && checkColumn(COLUMN, VALUE)) {
+				board[ROW][COLUMN] = VALUE;
+				return true;
+			}
+			if(VALUE == BOARD_SIZE)
+				VALUE = 1;
+			else
+				VALUE++;
+		} while(VALUE != START);
+		return false;
 	}
 	
 	private boolean checkGrid(int ROW, int COLUMN, int VALUE) {
@@ -35,13 +49,38 @@ public class Board {
 		return test;
 	}
 	
-	private boolean checkRow(int ROW, int COLUMN, int VALUE) {
+	private boolean checkRow(int ROW, int VALUE) {
 		boolean test = true;
 		for(int BOARD_COLUMN = 0; BOARD_COLUMN < BOARD_SIZE; BOARD_COLUMN++) {
-			// I left off here
+			if(board[ROW][BOARD_COLUMN] == VALUE)
+				return false;
 		}
 		return test;
 	}
+	
+	private boolean checkColumn(int COLUMN, int VALUE) {
+		boolean test = true;
+		for(int BOARD_ROW = 0; BOARD_ROW < BOARD_SIZE; BOARD_ROW++) {
+			if(board[BOARD_ROW][COLUMN] == VALUE)
+				return false;
+		}
+		return test;
+	}
+	
+	public void printBoard() {
+		for(int ROW = 0; ROW < BOARD_SIZE; ROW++) {
+			for(int COLUMN = 0; COLUMN < BOARD_SIZE; COLUMN++) {
+				if(COLUMN == 3 || COLUMN == 6)
+					System.out.print("| ");
+				System.out.print(board[ROW][COLUMN] + " ");
+			}
+			System.out.println("");
+			if(ROW == 2 || ROW == 5)
+				System.out.println("---------------------");
+		}
+	}
+	
+	public boolean getSuccess() {return success;}
 }
 
 /*    Just for reference
