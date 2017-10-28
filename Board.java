@@ -3,9 +3,11 @@ package com.randommurican.practiceSudoku;
 import java.util.Random;
 
 public class Board {
+	private static int BOARD_SIZE = 9;
+	
 	private boolean success;
 	private int[][] board;
-	private static int BOARD_SIZE = 9;
+	
 
 	Board() {
 		success = true;
